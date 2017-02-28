@@ -18,7 +18,7 @@ class UploadController{
 
 		//upload gif
 		$data = array();
-		$relfile = \Ku\File::upload('');
+		$relfile = \Lib\File::upload('');
 		// one is resized gif; one is origin gif
 		$data['file'] = $relfile;
 		$data['origin'] = $relfile;
@@ -42,8 +42,8 @@ class UploadController{
 			}
 			//all gif convert to 300*xxx
 			if ($src_type == 'gif') {
-				if (\Ku\GifFrameExtractor::isAnimatedGif(PUBLIC_PATH . $data['file'])) {
-					$gfe = new \Ku\GifFrameExtractor();
+				if (\Lib\GifFrameExtractor::isAnimatedGif(PUBLIC_PATH . $data['file'])) {
+					$gfe = new \Lib\GifFrameExtractor();
 					$gfe->extract(PUBLIC_PATH . $data['file']);
 					$frameImages = $gfe->getFrameImages();
 					$frameDurations = $gfe->getFrameDurations();
@@ -52,7 +52,7 @@ class UploadController{
 						imagecopyresized($dst_frame, $src_frame, 0, 0, 0, 0, $dst_width, $dst_height, $width, $height);
 						$resources[] = $dst_frame;
 					}
-					$gc = new \Ku\GifCreator();
+					$gc = new \Lib\GifCreator();
 					$gc->create($resources, $frameDurations, 0); //0 meaning infinite loop
 					$gifBinary = $gc->getGif();
 					$dst_path = substr($data['file'], 0, stripos($data['file'], '_') + 1) . $dst_width . '*' . $dst_height . '.gif';
@@ -85,8 +85,8 @@ class UploadController{
 
 				//all gif convert to 1024*xxx
 				if ($src_type == 'gif') {
-					if (\Ku\GifFrameExtractor::isAnimatedGif(PUBLIC_PATH . $data['file'])) {
-						$gfe = new \Ku\GifFrameExtractor();
+					if (\Lib\GifFrameExtractor::isAnimatedGif(PUBLIC_PATH . $data['file'])) {
+						$gfe = new \Lib\GifFrameExtractor();
 						$gfe->extract(PUBLIC_PATH . $data['file']);
 						$frameImages = $gfe->getFrameImages();
 						$frameDurations = $gfe->getFrameDurations();
@@ -95,7 +95,7 @@ class UploadController{
 							imagecopyresized($dst_frame, $src_frame, 0, 0, 0, 0, $dst_width, $dst_height, $width, $height);
 							$resources[] = $dst_frame;
 						}
-						$gc = new \Ku\GifCreator();
+						$gc = new \Lib\GifCreator();
 						$gc->create($resources, $frameDurations, 0); //0 meaning infinite loop
 						$gifBinary = $gc->getGif();
 						$dst_path = substr($data['file'], 0, stripos($data['file'], '_') + 1) . $dst_width . '*' . $dst_height . '.gif';
